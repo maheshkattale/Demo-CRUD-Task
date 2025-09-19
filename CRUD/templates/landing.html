@@ -5,44 +5,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Users — Admin</title>
-    <!-- Bootstrap 5 -->
+    <title>Mahesh Kattale – Admin Demo</title>
+    <link rel="icon" href="{% static 'images/mahesh-icon.png' %}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Professional but subtle custom styles */
-        body {
-            background: #f6f8fb;
-        }
-
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(20, 30, 60, 0.06);
-        }
-
-        .table thead th {
-            border-bottom: 0;
-        }
-
-        .btn-primary {
-            background-image: linear-gradient(135deg, #4f46e5, #06b6d4);
-            border: none;
-        }
-
-        .form-label.required:after {
-            content: " *";
-            color: #dc3545;
-        }
-
-        .small-muted {
-            color: #6b7280;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/landing.css' %}">
 </head>
 
 <body>
-    <div class="container py-5">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+
+            </a>
+            <span class="navbar-text small">
+                <div><i class="fa fa-user-shield me-2"></i>
+                Developed by <strong>Mahesh Kattale</strong></div>
+                <div>
+                    <i class="fa fa-phone me-2"></i>
+                Contact <strong>7776008548</strong>
+                </div>
+                <div>
+                    <i class="fa fa-envelope me-2"></i>
+                Email <strong>maheshkattale1926@gmail.com</strong>
+                </div>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="mb-0">Users</h2>
@@ -65,21 +57,43 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Mobile</th>
+                                <th>Email</th>
                                 <th>Age</th>
                                 <th>Qualification</th>
                                 <th class="text-end">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Add / Edit User -->
+    <div class="container my-5">
+        <h2 class="mb-4">Third Party Data</h2>
+        <div class="row third-party-div">
+            {% for item in third_party_data %}
+            
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge bg-gradient-header text-white mb-2">External Data</span>
+                        <h5 class="card-title">{{ item.title|truncatewords:8 }}</h5>
+                        <p class="card-text small text-muted">{{ item.body|truncatewords:20 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="text-center py-3 mt-5">
+        <div class="small text-muted">
+            © 2025 Developed by <strong>Mahesh Kattale</strong>
+        </div>
+    </footer>
+
     <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -95,7 +109,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label required">Full Name</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="e.g., Mahesh Kattale" required maxlength="100">
+                                placeholder="e.g., ABC XYZ" required maxlength="100">
                         </div>
 
                         <div class="mb-3">
@@ -107,8 +121,7 @@
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email (optional)</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                placeholder="e.g.,">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com">
                             <div class="form-text">Must be a valid email address.</div>
                         </div>
 
@@ -134,7 +147,23 @@
         </div>
     </div>
 
-    <!-- Confirm Delete Modal -->
+    <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="userDetails"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content">
@@ -151,13 +180,11 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery Validation plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-        // CSRF setup for AJAX (Django)
+        
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -173,56 +200,47 @@
             return cookieValue;
         }
         const csrftoken = getCookie('csrftoken');
-
-        // Base API URL - adjust if your API root differs
         const API_BASE = '/api/user/';
         let editingId = null;
 
-        // Helpers  
-
-
-         
         function showAlert(message, type = 'success') {
             const el = $('#formAlert');
             el.removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-' + (type === 'error' ? 'danger' : type));
             el.text(message);
         }
-
+        
         function clearAlert() {
             $('#formAlert').addClass('d-none').text('');
         }
-
         function rowHtml(item, idx) {
             return `
-                <tr data-id="${item.id}">
-                <td>${idx}</td>
-                <td>${escapeHtml(item.name)}</td>
-                <td>${escapeHtml(item.mobile_number)}</td>
-                <td>${item.age}</td>
-                <td>${escapeHtml(item.qualification || '')}</td>
-                <td class="text-end">
-                    <button class="btn btn-sm btn-light me-1 editBtn" title="Edit"><i class="fa fa-pen"></i></button>
-                    <button class="btn btn-sm btn-outline-danger deleteBtn" title="Delete"><i class="fa fa-trash"></i></button>
-                </td>
-                </tr>
-            `;
+        <tr data-id="${item.id}">
+          <td>${idx}</td>
+          <td>${escapeHtml(item.name)}</td>
+          <td>${escapeHtml(item.mobile_number)}</td>
+          <td>${escapeHtml(item.email || '')}</td>
+          <td>${item.age}</td>
+          <td>${escapeHtml(item.qualification || '')}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-primary m-1 viewBtn" title="View"><i class="fa fa-eye"></i></button>
+            <button class="btn btn-sm btn-outline-secondary m-1 editBtn" title="Edit"><i class="fa fa-pen"></i></button>
+            <button class="btn btn-sm btn-outline-danger m-1 deleteBtn" title="Delete"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      `;
         }
-
         function escapeHtml(text) {
             return $('<div/>').text(text).html();
         }
-
-        // Load all users
+        
         function loadUsers() {
-            $.get(API_BASE+'user-list-api', function (response) {
+            $.get(API_BASE + 'user-list-api', function (response) {
                 const tbody = $('#usersTable tbody').empty();
-                console.log(response.data);
                 if (response.data.length === 0) {
                     tbody.append('<tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>');
                     return;
-                }else{
+                } else {
                     response.data.forEach((item, i) => tbody.append(rowHtml(item, i + 1)));
-
                 }
             }).fail(function () {
                 console.error('Failed to load users');
@@ -231,8 +249,7 @@
 
         $(function () {
             loadUsers();
-
-            // Open Add modal
+            
             $('#btnAdd').on('click', function () {
                 editingId = null;
                 $('#modalTitle').text('Add User');
@@ -240,26 +257,52 @@
                 clearAlert();
             });
 
-            // Delegate Edit button
             $('#usersTable').on('click', '.editBtn', function () {
                 const tr = $(this).closest('tr');
                 const id = tr.data('id');
                 editingId = id;
                 $('#modalTitle').text('Edit User');
                 clearAlert();
-                // Fetch single user
-                $.get(API_BASE + id + '/', function (data) {
-                    $('#userId').val(data.id);
-                    $('#name').val(data.name);
-                    $('#mobile_number').val(data.mobile_number);
-                    $('#age').val(data.age);
-                    $('#qualification').val(data.qualification);
+                $.get(API_BASE + 'get-user-detail/' + id, function (response) {
+                    if (response.data) {
+                        $('#userId').val(response.data.id);
+                        $('#name').val(response.data.name);
+                        $('#mobile_number').val(response.data.mobile_number);
+                        $('#email').val(response.data.email);
+                        $('#age').val(response.data.age);
+                        $('#qualification').val(response.data.qualification);
+                    } else {
+                        showAlert('User not found', 'error');
+                    }
                     var modal = new bootstrap.Modal(document.getElementById('userModal'));
                     modal.show();
                 }).fail(function () { showAlert('Could not load user', 'error'); });
             });
 
-            // Delegate Delete button
+            $('#usersTable').on('click', '.viewBtn', function () {
+                const tr = $(this).closest('tr');
+                const id = tr.data('id');
+                $.get(API_BASE + 'get-user-detail/' + id, function (response) {
+                    if (response.data) {
+                        let user = response.data;
+                        let detailsHtml = `
+                            <p><strong>Name:</strong> ${escapeHtml(user.name)}</p>
+                            <p><strong>Mobile Number:</strong> ${escapeHtml(user.mobile_number)}</p>
+                            <p><strong>Email:</strong> ${escapeHtml(user.email || 'N/A')}</p>
+                            <p><strong>Age:</strong> ${user.age}</p>
+                            <p><strong>Qualification:</strong> ${escapeHtml(user.qualification || 'N/A')}</p>
+                            `;
+                        $('#viewUserModal .modal-title').text('User Details');
+                        $('#viewUserModal .modal-body').html(detailsHtml);
+                        $('#viewUserModal .modal-footer').hide();
+                    } else {
+                        showAlert('User not found', 'error');
+                    }
+                    var modal = new bootstrap.Modal(document.getElementById('viewUserModal'));
+                    modal.show();
+                }).fail(function () { showAlert('Could not load user', 'error'); });
+            });
+
             let deleteTargetId = null;
             $('#usersTable').on('click', '.deleteBtn', function () {
                 const tr = $(this).closest('tr');
@@ -271,7 +314,7 @@
             $('#confirmDeleteBtn').on('click', function () {
                 if (!deleteTargetId) return;
                 $.ajax({
-                    url: API_BASE + deleteTargetId + '/',
+                    url: API_BASE + 'delete-user/' + deleteTargetId,
                     method: 'DELETE',
                     headers: { 'X-CSRFToken': csrftoken },
                     success: function () {
@@ -287,11 +330,18 @@
                 });
             });
 
-            // jQuery validation rules
+            
+            $.validator.addMethod('regex', function (value, element, regexp) {
+                if (this.optional(element)) return true;
+                var re = (typeof regexp === 'string') ? new RegExp(regexp) : regexp;
+                return re.test(value);
+            }, 'Invalid format');
+
             $('#userForm').validate({
                 rules: {
                     name: { required: true, maxlength: 100 },
                     mobile_number: { required: true, maxlength: 15, minlength: 7, regex: /^[+\d][\d\s\-]+$/ },
+                    email: { maxlength: 100, regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
                     age: { required: true, number: true, min: 0, max: 120 },
                     qualification: { maxlength: 100 }
                 },
@@ -305,18 +355,17 @@
                     error.insertAfter(element);
                 },
                 submitHandler: function (form) {
-                    // gather data
                     const payload = {
                         name: $('#name').val().trim(),
                         mobile_number: $('#mobile_number').val().trim(),
+                        email: $('#email').val().trim() || null,
                         age: parseInt($('#age').val(), 10),
                         qualification: $('#qualification').val().trim() || null
                     };
-
                     let method = editingId ? 'PUT' : 'POST';
-                    let url = API_BASE+'add-user' + (editingId ? editingId + '/' : '');
-                    debugger
-                    console.log('Submitting', method, url, payload);
+                    console.log('Payload:', payload, 'Method:', method, 'EditingId:', editingId);
+
+                    let url = API_BASE + (editingId ? 'edit-user/' + editingId : 'add-user');
                     $.ajax({
                         url: url,
                         method: method,
@@ -324,7 +373,7 @@
                         data: JSON.stringify(payload),
                         headers: { 'X-CSRFToken': csrftoken },
                         success: function (response) {
-                            if (response.response.n==1) {
+                            if (response.response.n == 1) {
                                 showAlert('User saved successfully', 'success');
                                 loadUsers();
                                 var modalEl = document.getElementById('userModal');
@@ -334,7 +383,6 @@
                                 showAlert('Error: ' + (response.response.msg || 'Unknown error'), 'error');
                                 return;
                             }
-                            
                         },
                         error: function (xhr) {
                             const resp = xhr.responseJSON || {};
@@ -344,14 +392,6 @@
                     });
                 }
             });
-
-            // add custom regex method
-            $.validator.addMethod('regex', function (value, element, regexp) {
-                if (this.optional(element)) return true;
-                var re = (typeof regexp === 'string') ? new RegExp(regexp) : regexp;
-                return re.test(value);
-            }, 'Invalid format');
-
         });
     </script>
 </body>

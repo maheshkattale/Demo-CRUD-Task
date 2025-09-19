@@ -38,7 +38,8 @@ class add_user_api(GenericAPIView):
         data['age']=request.data.get('age')
         data['email']=request.data.get('email')
         data['qualification']=request.data.get('qualification')
-        if not data['name'] or not data['mobile_number'] or not data['age'] or not data['email'] or not data['qualification']:
+        print("data",data)
+        if not data['name'] or not data['mobile_number'] or not data['age']:
             return Response({
                 "data" : [],
                 "response":{
@@ -47,8 +48,8 @@ class add_user_api(GenericAPIView):
                     "status":"error"
                     }
             })
-        
-        if UserProfile.objects.filter(mobile_number=data['mobile_number']).exists():
+
+        if UserProfile.objects.filter(mobile_number=data['mobile_number'],is_active=True).exists():
             return Response({
                 "data" : [],
                 "response":{
@@ -57,15 +58,7 @@ class add_user_api(GenericAPIView):
                     "status":"error"
                     }
             })
-        if UserProfile.objects.filter(email=data['email']).exists():
-            return Response({
-                "data" : [],
-                "response":{
-                    "n":0,
-                    "msg":"Email already exists",
-                    "status":"error"
-                    }
-            })
+
 
         serializer = UserProfileSerializer(data=data)
         if serializer.is_valid():
@@ -79,6 +72,7 @@ class add_user_api(GenericAPIView):
                     }
             })
         else:
+            print("serializer.errors",serializer.errors)
             return Response({
                 "data" : [],
                 "response":{
@@ -88,8 +82,161 @@ class add_user_api(GenericAPIView):
                     }
             })
 
+class get_user_detail_api(GenericAPIView):
+    def get(self,request,pk):
+        if pk:
+            user_obj = UserProfile.objects.filter(pk=pk,is_active=True).first()
+            if user_obj:
+                serializer = UserProfileSerializer(user_obj)
+                return Response({
+                    "data" : serializer.data,
+                    "response":{
+                        "n":1,
+                        "msg":"User found Successfully",
+                        "status":"success"
+                        }
+                })
+            else:
+                return Response({
+                    "data" : [],
+                    "response":{
+                        "n":0,
+                        "msg":"No User Found",
+                        "status":"error"
+                        }
+                })
+        else:
+            return Response({
+                "data" : [],
+                "response":{
+                    "n":0,
+                    "msg":"Please provide valid user id",
+                    "status":"error"
+                    }
+            })
 
 
+class edit_user_api(GenericAPIView):
+    def put(self,request,pk):
+        if pk:
+            user_obj = UserProfile.objects.filter(pk=pk,is_active=True).first()
+            if user_obj:
+                data={}
+                data['name']=request.data.get('name')
+                data['mobile_number']=request.data.get('mobile_number')
+                data['age']=request.data.get('age')
+                data['email']=request.data.get('email')
+                data['qualification']=request.data.get('qualification')
+
+
+
+                if not data['name'] or not data['mobile_number'] or not data['age']:
+                    return Response({
+                        "data" : [],
+                        "response":{
+                            "n":0,
+                            "msg":"All fields are required",
+                            "status":"error"
+                            }
+                    })
+                if UserProfile.objects.filter(mobile_number=data['mobile_number'],is_active=True).exclude(pk=pk).exists():
+                    return Response({
+                        "data" : [],
+                        "response":{
+                            "n":0,
+                            "msg":"Mobile Number already exists",
+                            "status":"error"
+                            }
+                    })
+                print("data",data)
+
+                serializer = UserProfileSerializer(user_obj,data=data,partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({
+                        "data" : serializer.data,
+                        "response":{
+                            "n":1,
+                        "msg":"User edited Successfully",
+                        "status":"success"
+                        }
+                    })
+                else:
+                    return Response({
+                        "data" : [],
+                        "response":{
+                            "n":0,
+                            "msg":serializer.errors,
+                            "status":"error"
+                            }
+                    })
+            else:
+                return Response({
+                    "data" : [],
+                    "response":{
+                        "n":0,
+                        "msg":"No User Found",
+                        "status":"error"
+                        }
+                })
+        else:
+            return Response({
+                "data" : [],
+                "response":{
+                    "n":0,
+                    "msg":"Please provide valid user id",
+                    "status":"error"
+                    }
+            })
+      
+   
+
+class delete_user_api(GenericAPIView):
+    def delete(self,request,pk):
+        if pk:
+            user_obj = UserProfile.objects.filter(pk=pk,is_active=True).first()
+            if user_obj:
+                data={}
+                data['is_active']=False
+                serializer = UserProfileSerializer(user_obj,data=data,partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({
+                        "data" : serializer.data,
+                        "response":{
+                            "n":1,
+                        "msg":"User deleted Successfully",
+                        "status":"success"
+                        }
+                    })
+                else:
+                    return Response({
+                        "data" : [],
+                        "response":{
+                            "n":0,
+                            "msg":serializer.errors,
+                            "status":"error"
+                            }
+                    })
+            else:
+                return Response({
+                    "data" : [],
+                    "response":{
+                        "n":0,
+                        "msg":"No User Found",
+                        "status":"error"
+                        }
+                })
+        else:
+            return Response({
+                "data" : [],
+                "response":{
+                    "n":0,
+                    "msg":"Please provide valid user id",
+                    "status":"error"
+                    }
+            })
+      
 
 
 

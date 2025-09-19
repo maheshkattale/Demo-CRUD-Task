@@ -1,0 +1,75 @@
+body {
+    background: #f9fafc;
+    font-family: 'Inter', sans-serif;
+}
+
+.bg-gradient-header {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 6px 18px rgba(20, 30, 60, 0.06);
+    transition: transform .2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.table thead th {
+    border-bottom: 0;
+}
+
+.btn-primary {
+    background-image: linear-gradient(135deg, #4f46e5, #06b6d4);
+    border: none;
+}
+
+.btn-primary:hover {
+    opacity: .9;
+}
+
+.form-label.required:after {
+    content: " *";
+    color: #dc3545;
+}
+
+.small-muted {
+    color: #6b7280;
+}
+
+footer {
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+}
+
+.navbar-text {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    color: rgb(65 92 226);
+}
+
+.third-party-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 6px 18px rgba(20, 30, 60, 0.06);
+    transition: transform .2s ease;
+    background: #ffffff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.third-party-div {
+
+    max-height: 80vh;
+    overflow: auto;
+}

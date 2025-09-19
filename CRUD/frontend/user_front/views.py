@@ -5,17 +5,22 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from helpers.static_info import hosturl
-# Trip API URLs
 
 def landing_page(request):
     if request.method == 'GET':
         users_url=hosturl+'/api/user/user-list-api'
         users_request = requests.get(users_url)
         users_response = users_request.json()
-        print("users_response",users_response)
+
+
+        third_party_url = "https://jsonplaceholder.typicode.com/posts"
+        response = requests.get(third_party_url, timeout=10)
+        response.raise_for_status() 
+        third_party_data = response.json()
 
         context = {
             'users': users_response['data'],
+            'third_party_data': third_party_data
         }
         
         return render(request, 'landing.html', context)
