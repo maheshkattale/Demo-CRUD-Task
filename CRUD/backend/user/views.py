@@ -162,11 +162,18 @@ class edit_user_api(GenericAPIView):
                         }
                     })
                 else:
+                    first_key, first_value = next(iter(serializer.errors.items()))
+                    if isinstance(first_value, list) and first_value:
+                        error_message = first_value[0]
+                    else:
+                        error_message = "Invalid data"
+
+                    print("serializer.errors",serializer.errors)
                     return Response({
                         "data" : [],
                         "response":{
                             "n":0,
-                            "msg":serializer.errors,
+                            "msg":error_message,
                             "status":"error"
                             }
                     })

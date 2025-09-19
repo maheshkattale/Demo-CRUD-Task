@@ -237,7 +237,7 @@
             $.get(API_BASE + 'user-list-api', function (response) {
                 const tbody = $('#usersTable tbody').empty();
                 if (response.data.length === 0) {
-                    tbody.append('<tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>');
+                    tbody.append('<tr><td colspan="7" class="text-center text-muted py-4">No users found.</td></tr>');
                     return;
                 } else {
                     response.data.forEach((item, i) => tbody.append(rowHtml(item, i + 1)));
