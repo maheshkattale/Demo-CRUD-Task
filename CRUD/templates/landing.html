@@ -21,14 +21,14 @@
             </a>
             <span class="navbar-text small">
                 <div><i class="fa fa-user-shield me-2"></i>
-                Developed by <strong>Mahesh Kattale</strong></div>
+                    Developed by <strong>Mahesh Kattale</strong></div>
                 <div>
                     <i class="fa fa-phone me-2"></i>
-                Contact <strong>7776008548</strong>
+                    Contact <strong>7776008548</strong>
                 </div>
                 <div>
                     <i class="fa fa-envelope me-2"></i>
-                Email <strong>maheshkattale1926@gmail.com</strong>
+                    Email <strong>maheshkattale1926@gmail.com</strong>
                 </div>
             </span>
         </div>
@@ -74,7 +74,7 @@
         <h2 class="mb-4">Third Party Data</h2>
         <div class="row third-party-div">
             {% for item in third_party_data %}
-            
+
             <div class="col-md-4 mb-3">
                 <div class="card h-100">
                     <div class="card-body">
@@ -108,8 +108,8 @@
 
                         <div class="mb-3">
                             <label for="name" class="form-label required">Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="e.g., ABC XYZ" required maxlength="100">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="e.g., ABC XYZ"
+                                required maxlength="100">
                         </div>
 
                         <div class="mb-3">
@@ -121,7 +121,8 @@
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email (optional)</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com">
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="abc@example.com">
                             <div class="form-text">Must be a valid email address.</div>
                         </div>
 
@@ -184,7 +185,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-        
+
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -208,7 +209,7 @@
             el.removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-' + (type === 'error' ? 'danger' : type));
             el.text(message);
         }
-        
+
         function clearAlert() {
             $('#formAlert').addClass('d-none').text('');
         }
@@ -232,7 +233,7 @@
         function escapeHtml(text) {
             return $('<div/>').text(text).html();
         }
-        
+
         function loadUsers() {
             $.get(API_BASE + 'user-list-api', function (response) {
                 const tbody = $('#usersTable tbody').empty();
@@ -249,7 +250,7 @@
 
         $(function () {
             loadUsers();
-            
+
             $('#btnAdd').on('click', function () {
                 editingId = null;
                 $('#modalTitle').text('Add User');
@@ -330,7 +331,7 @@
                 });
             });
 
-            
+
             $.validator.addMethod('regex', function (value, element, regexp) {
                 if (this.optional(element)) return true;
                 var re = (typeof regexp === 'string') ? new RegExp(regexp) : regexp;
@@ -378,7 +379,9 @@
                                 loadUsers();
                                 var modalEl = document.getElementById('userModal');
                                 var modal = bootstrap.Modal.getInstance(modalEl);
-                                modal.hide();
+                                setTimeout(function () {
+                                    modal.hide();
+                                }, 1000);
                             } else {
                                 showAlert('Error: ' + (response.response.msg || 'Unknown error'), 'error');
                                 return;
